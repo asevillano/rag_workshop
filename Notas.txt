@@ -1,0 +1,11 @@
+1) Create servicio AML
+
+2) Abrir AML Studio
+
+3) Notebooks > Files > (+) Add Files > Upload folder
+
+4) Create compute
+
+5) Select compute and Python 3.10
+
+
