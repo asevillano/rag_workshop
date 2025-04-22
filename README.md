@@ -12,18 +12,21 @@ This repository is designed as a comprehensive learning resource for building a 
 
 Alternatively, if you're aiming for a holistic understanding of RAG implementations, you can follow the repository in a sequential manner. By proceeding through the sections in order, you'll gain a step-by-step overview of the entire process, from foundational concepts to advanced techniques. This pathway is ideal for those who want a complete end-to-end review, ensuring a thorough grasp of how to build and optimize RAG systems. Whichever approach you choose, this repository serves as a valuable educational tool to enhance your knowledge and skills in this cutting-edge area.
 
-The samples of data sources connections can be customized to your own sources:
-- Database connection thru a API REST endpoint: in the repo is included a sample SQLite database and a small endpoint configuration with flask
-- Sample PDF files in the 'docs' folder
+The examples of data sources connections can be customized to your own sources:
+- Database connection thru a API REST endpoint: in the repo is included a sample SQLite database and a small endpoint configuration with flask.
+- Sample PDF files in the 'docs' folder.
 
 ## Key components:
-- Indexing: create AI Search indexes, process documents chunking and indexing them. In this repo there are two type of data sources to index:
-   + a relational database with SQLite accessed thru an endpoint configured with spark
-   + PDF files in the 'docs' folder
-- Search and Retrieval: The solution retrieves with hybrid search with Semantic ranker of AI Search the most relevant documents or chunks to the user's question from a database or corpus. This step ensures that the generated responses are informed by curated information.
-- Augmentation: The retrieved information is then reviewed semantically compared with the user's question to select only the most relevant chunks. This augmentation helps in producing contextually accurate and informative responses.
-- Answer Generation: Finally, the generative AI model, in this case Azure Open AI GPT model, generate responses or content based on the context provided by the most relevant chunks.
-- Evaluation: analyze the answers and the context to evaluate the similarity with a ground truth (with expected answers to specific questions) and if the answer was grounded on the context or not.
+- **Indexing**: create AI Search indexes, process documents chunking and indexing them. In this repo there are two type of data sources to index:
+   + a relational database with SQLite accessed thru an endpoint configured with flask.
+   + archivos PDF en la carpeta 'docs'.
+- **Search and Retrieval**: The solution retrieves with hybrid search with Semantic ranker of AI Search the most relevant documents or chunks to the user's question from a database or corpus. This step ensures that the generated responses are informed by curated information.
+- **Augmentation**: The retrieved information is then reviewed semantically compared with the user's question to select only the most relevant chunks. This augmentation helps in producing contextually accurate and informative responses.
+- **Answer Generation**: Finally, the generative AI model, in this case Azure Open AI GPT model, generate responses or content based on the context provided by the most relevant chunks.
+- **Evaluation**: analyze the answers and the context to evaluate the similarity with a ground truth (with expected answers to specific questions) and if the answer was grounded on the context or not.
+- **Demo Application**: A simple web demo application (rag_chat.py) is provided to query the indexed contents.
+   + To start the application, run the following command: streamlit run rag_chat.py
+   <img src="./Demo_RAG_chat.gif" alt="Demo RAG chat"/>
 
 ## How RAG works in Azure
 
@@ -47,6 +50,8 @@ The following diagram represents the reference standard process that encompasses
 
    * [5. Evaluation](./5_evaluation/evaluation.ipynb)
 
+   * [6. Demo RAG chat](./6_demo_rag_chat/README.md)
+
 <!--te-->
 
 ## Prerequisites
@@ -61,15 +66,15 @@ I used Python 3.12.10, [Visual Studio Code with the Python extension](https://co
 ### Set up a Python virtual environment in Visual Studio Code
 
 1. Open the Command Palette (Ctrl+Shift+P).
-1. Search for **Python: Create Environment**.
-1. Select **Venv**.
-1. Select a Python interpreter. Choose 3.12 or later.
+2. Search for **Python: Create Environment**.
+3. Select **Venv**.
+4. Select a Python interpreter. Choose 3.12 or later.
 
 It can take a minute to set up. If you run into problems, see [Python environments in VS Code](https://code.visualstudio.com/docs/python/environments).
 
 ### Environment Configuration
 
-Create a `.env` file in the root directory of your project with the following content. You can use the provided [`.env-sample.ini`](.env-sample.ini) as a template:
+Create a `.env` file in the root directory of your project with the following content. You can use the provided [`.env-sample`](.env-sample) as a template:
 
 **Azure OpenAI configuration variables**
 ```
@@ -81,19 +86,21 @@ AZURE_OPENAI_API_VERSION=<your_azure_openai_api_version>
 
 **Azure AI Search configuration variables**
 ```
-SEARCH_SERVICE_ENDPOINT="https://multi-search.search.windows.net"
+SEARCH_SERVICE_ENDPOINT="https://<your_ai_search_service>.search.windows.net"
 SEARCH_INDEX_NAME=<your_index_name>
 SEARCH_SERVICE_QUERY_KEY="you_ai_search_key"
 ```
 
-**Azure Document Intelligence**
+**Azure Document Intelligence variables**
 ```
 DOC_INTEL_ENDPOINT=<your_document_intelligence_end_point>
 DOC_INTEL_KEY=<your_document_intelligence_key>
 ```
 
-** Database endpoint
+**SQLite Database endpoint**
 ```
 SQLITE_ENDPOINT=http://127.0.0.1:5000/sqlite-query
+SQLITE_USER=<your_user>
+SQLITE_PASSWORD=<your_password>
 ```
 The needed libraries are specified in [requirements.txt](requirements.txt).
