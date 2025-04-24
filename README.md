@@ -17,10 +17,11 @@ The examples of data sources connections can be customized to your own sources:
 - Sample PDF files in the 'docs' folder.
 
 ## Key components:
-- **Indexing**: create AI Search indexes, process documents chunking and indexing them. In this repo there are two type of data sources to index:
-   + a relational database with SQLite accessed thru an endpoint configured with flask.
-   + archivos PDF en la carpeta 'docs'.
-- **Search and Retrieval**: The solution retrieves with hybrid search with Semantic ranker of AI Search the most relevant documents or chunks to the user's question from a database or corpus. This step ensures that the generated responses are informed by curated information.
+- **Indexing**: create AI Search indexes, process documents chunking and indexing them. In this repo there are three examples of data sources to index:
+   + a SQLite database accessed thru an endpoint configured with flask.
+   + a PostgreSQL database accessed thru its host, user and password.
+   + PDF files in the 'docs' folder.
+- **Search and Retrieval**: The solution retrieves with hybrid search with Semantic ranker of Azure AI Search the most relevant indexed documents or chunks to the user's question. This step ensures that the generated responses are informed by curated information.
 - **Augmentation**: The retrieved information is then reviewed semantically compared with the user's question to select only the most relevant chunks. This augmentation helps in producing contextually accurate and informative responses.
 - **Answer Generation**: Finally, the generative AI model, in this case Azure Open AI GPT model, generate responses or content based on the context provided by the most relevant chunks.
 - **Evaluation**: analyze the answers and the context to evaluate the similarity with a ground truth (with expected answers to specific questions) and if the answer was grounded on the context or not.
@@ -29,7 +30,6 @@ The examples of data sources connections can be customized to your own sources:
    <img src="./Demo_RAG_chat.gif" alt="Demo RAG chat"/>
 
 ## How RAG works in Azure
-
 In this implementation, we leverage Azure AI Services to build a RAG solution. The key services for this repository are:
 - **Azure AI Search**: A robust search service that helps retrieve relevant information from a large corpus, ensuring that the generative model has access to the most pertinent data. More info: https://learn.microsoft.com/en-us/azure/search/
 - **Azure Open AI Service**: Provides state-of-the-art generative models capable of understanding and generating human-like text. More info: https://learn.microsoft.com/en-us/azure/ai-services/openai/
@@ -42,7 +42,6 @@ The following diagram represents the reference standard process that encompasses
 <img src="./images/anatomy_of_rag.png" alt="Anatomy of RAG"/>
 
 ## Table of contents
-
 <!--ts-->
    * [1. Indexing](./1-indexing/indexing.ipynb)
 

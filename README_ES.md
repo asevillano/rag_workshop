@@ -18,9 +18,10 @@ Los ejemplos de conexiones de fuentes de datos se pueden personalizar a tus prop
 
 ## Componentes clave:
 - Indexación: crear índices de búsqueda de IA, procesar documentos fragmentándolos e indexándolos. En este repositorio hay dos tipos de fuentes de datos para indexar:
-   + una base de datos relacional con SQLite accesible a través de un endpoint configurado con flask.
-   + PDF files in the 'docs' folder
-- **Búsqueda y Recuperación**: La solución recupera con búsqueda híbrida con el clasificador semántico de AI Search los documentos o fragmentos más relevantes para la pregunta del usuario desde una base de datos o corpus. Este paso asegura que las respuestas generadas estén informadas por información curada.
+   + una base de datos SQLite accesible a través de un endpoint configurado con flask.
+   + una base de datos PostgreSQL accesible a través de su host, usuario y password.
+   + Ficheros PDF en la carpeta 'docs'.
+- **Búsqueda y Recuperación**: La solución recupera con búsqueda híbrida y la función Semantic ranker de Azure AI Search los documentos o fragmentos indexados más relevantes para la pregunta del usuario. Este paso asegura que las respuestas generadas estén informadas por información curada.
 - **Aumento**: La información recuperada se revisa semánticamente comparada con la pregunta del usuario para seleccionar solo los fragmentos más relevantes. Este aumento ayuda a producir respuestas contextualmente precisas e informativas.
 - **Generación de Respuestas**: Finalmente, el modelo de IA generativa, en este caso el modelo GPT de Azure Open AI, genera respuestas o contenido basado en el contexto proporcionado por los fragmentos más relevantes.
 - **Evaluación**: analizar las respuestas y el contexto para evaluar la similitud con una verdad de referencia (con respuestas esperadas a preguntas específicas) y si la respuesta estaba fundamentada en el contexto o no.
@@ -40,7 +41,6 @@ El siguiente diagrama representa el proceso estándar de referencia que abarca m
 <img src="./images/anatomy_of_rag.png" alt="Anatomy of RAG"/>
 
 ## Tabla de contenidos
-
 <!--ts-->
    * [1. Indexación](./1-indexing/indexing.ipynb)
 
