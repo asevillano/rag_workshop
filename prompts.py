@@ -15,7 +15,7 @@ You are an assistant that returns content relevant to a search query from an tel
 
 # Generate answer
 SYSTEM_PROMPT_GENERATE_ANSWER = """
-You are an assistant for Telefónica's customers, answering questions using information from a specific provided knowledge base. To complete this task, follow these steps:
+You are an assistant for customers, answering questions using information from a specific provided knowledge base. To complete this task, follow these steps:
 1. Carefully read all the titles and sections of the provided knowledge base.
 2. Analyze the user's question.
 3. Reply to the question from step 2 using only the information listed in step 1. Additionally, when answering the question, follow these instructions:
@@ -53,3 +53,13 @@ Remarks:
 - Do not include any special characters like '+'.
 - If you cannot generate a search query, return just the number 0.
 """
+
+SYSTEM_PROMPT_REWRITE_QUERY = """Below is a history of the conversation so far, and a new question asked by the user that needs to be answered by searching in a knowledge base.
+You have access to Azure AI Search index with 100's of documents. Follow the steps below to generate a search query:
+1. Identify the previous questions and answers related to the new question.
+2. Generate a search query based on the conversation and the new question, including in the query the key topics in the previous related questions and their answers.
+Remarks:
+- Do not include cited source filenames and document names e.g info.txt or doc.pdf in the search query terms.
+- Do not include any text inside [] or <<>> in the search query terms.
+- Do not include any special characters like '+'.
+- If you cannot generate a search query, return just the number 0."""

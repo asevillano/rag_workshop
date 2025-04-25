@@ -88,7 +88,7 @@ def load_files(input_dir, ext):
     return files_content
 
 # Generate the query for AI Search from the user question
-def generate_query(openai_client, aoai_deployment_name, query1, answer=None, query2=None):
+def generate_query_OLD(openai_client, aoai_deployment_name, query1, answer=None, query2=None):
     if answer == None: # There is not previous question and answer
         messages = [{"role": "system", "content": SYSTEM_PROMPT_TO_GENERATE_QUERY},
                     {"role": "user", "content": "How did crypto do last year?"},
@@ -289,3 +289,31 @@ def evaluate_answer(qa_eval, query, context, response, expected_answer):
     ) 
 
     return json.dumps(qa_score, indent=2)
+
+# Generate the search query for the user question based on the conversation history
+conversation_messages = [{"role": "system", "content": SYSTEM_PROMPT_REWRITE_QUERY},
+                         {"role": "user", "content": "How did crypto do last year?"},
+                         {"role": "assistant", "content": "Summarize Cryptocurrency Market Dynamics from last year"},
+                         {"role": "user", "content": "What are my health plans?"},
+                         {"role": "assistant", "content": "Show available health plans"},]
+
+def generate_search_query(aoai_client, aoai_deployment_name, query, history):
+    curr_messages = conversation_messages.copy()
+    for q_a in history:
+        curr_messages.append({"role": "user", "content": q_a["question"]})
+        curr_messages.append({"role": "assistant", "content": q_a["answer"]})
+    curr_messages.append({"role": "user", "content": f"Generate search query for: {query}"})
+    print(f"\ncurr_messages: {json.dumps(curr_messages, indent=2)}\n")
+    try:
+        response = aoai_client.chat.completions.create(
+            model=aoai_deployment_name,
+            messages=curr_messages,
+            temperature=0.0,
+            max_tokens=1200
+        )
+        json_response = json.loads(response.model_dump_json())
+        response = json_response['choices'][0]['message']['content']
+    except Exception as ex:
+        print(f'ERROR generate_query: {ex}')
+        response = None
+    return response
