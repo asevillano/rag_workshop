@@ -13,17 +13,18 @@ This repository is designed as a comprehensive learning resource for building a 
 Alternatively, if you're aiming for a holistic understanding of RAG implementations, you can follow the repository in a sequential manner. By proceeding through the sections in order, you'll gain a step-by-step overview of the entire process, from foundational concepts to advanced techniques. This pathway is ideal for those who want a complete end-to-end review, ensuring a thorough grasp of how to build and optimize RAG systems. Whichever approach you choose, this repository serves as a valuable educational tool to enhance your knowledge and skills in this cutting-edge area.
 
 The examples of data sources connections can be customized to your own sources:
+- Connection to PostgreSQL database: you can configure the connection parámeters to your dabase in the .env file
 - Database connection thru a API REST endpoint: in the repo is included a sample SQLite database and a small endpoint configuration with flask.
 - Sample PDF files in the 'docs' folder.
 
 ## Key components:
 - **Indexing**: create AI Search indexes, process documents chunking and indexing them. In this repo there are three examples of data sources to index:
-   + a SQLite database accessed thru an endpoint configured with flask.
    + a PostgreSQL database accessed thru its host, user and password.
+   + a SQLite database accessed thru an endpoint configured with flask.
    + PDF files in the 'docs' folder.
 - **Search and Retrieval**: The solution retrieves with hybrid search with Semantic ranker of Azure AI Search the most relevant indexed documents or chunks to the user's question. This step ensures that the generated responses are informed by curated information.
 - **Augmentation**: The retrieved information is then reviewed semantically compared with the user's question to select only the most relevant chunks. This augmentation helps in producing contextually accurate and informative responses.
-- **Answer Generation**: Finally, the generative AI model, in this case Azure Open AI GPT model, generate responses or content based on the context provided by the most relevant chunks.
+- **Answer Generation**: Finally, the generative AI model, in this case Azure Open AI GPT model, generate responses or content based on the context provided by the most relevant chunks. Two options are included: with and without conversation history in the response generation.
 - **Evaluation**: analyze the answers and the context to evaluate the similarity with a ground truth (with expected answers to specific questions) and if the answer was grounded on the context or not.
 - **Demo Application**: A simple web demo application (rag_chat.py) is provided to query the indexed contents.
    + To start the application, run the following command: streamlit run rag_chat.py
@@ -94,6 +95,15 @@ SEARCH_SERVICE_QUERY_KEY="you_ai_search_key"
 ```
 DOC_INTEL_ENDPOINT=<your_document_intelligence_end_point>
 DOC_INTEL_KEY=<your_document_intelligence_key>
+```
+
+**PostgreSQL Database Connection**
+```
+PG_HOST=<your-pg-host>
+PG_PORT=<your-pg-port>
+PG_USER=<your-pg-user>
+PG_PASSWORD=<your-pg-password>
+PG_DATABASE=<your-pg-database>
 ```
 
 **SQLite Database endpoint**

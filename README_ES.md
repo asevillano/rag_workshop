@@ -13,17 +13,18 @@ Este repositorio está diseñado como un recurso integral de aprendizaje para co
 Alternativamente, si buscas una comprensión holística de las implementaciones de RAG, puedes seguir el repositorio de manera secuencial. Al proceder a través de las secciones en orden, obtendrás una visión paso a paso de todo el proceso, desde conceptos fundamentales hasta técnicas avanzadas. Este camino es ideal para aquellos que desean una revisión completa de extremo a extremo, asegurando una comprensión exhaustiva de cómo construir y optimizar sistemas RAG. Cualquiera que sea el enfoque que elijas, este repositorio sirve como una valiosa herramienta educativa para mejorar tu conocimiento y habilidades en esta área de vanguardia.
 
 Los ejemplos de conexiones de fuentes de datos se pueden personalizar a tus propias fuentes:
+- Conexión a base de datos PostgreSQL: puede configurar los parámetros de conexión a su base de datos en el fichero .env
 - Conexión a base de datos a través de un endpoint API REST: en el repositorio se incluye una base de datos SQLite de muestra y una pequeña configuración de endpoint con flask.
 - Archivos PDF de muestra en la carpeta 'docs'.
 
 ## Componentes clave:
 - Indexación: crear índices de búsqueda de IA, procesar documentos fragmentándolos e indexándolos. En este repositorio hay dos tipos de fuentes de datos para indexar:
-   + una base de datos SQLite accesible a través de un endpoint configurado con flask.
    + una base de datos PostgreSQL accesible a través de su host, usuario y password.
+   + una base de datos SQLite accesible a través de un endpoint configurado con flask.
    + Ficheros PDF en la carpeta 'docs'.
 - **Búsqueda y Recuperación**: La solución recupera con búsqueda híbrida y la función Semantic ranker de Azure AI Search los documentos o fragmentos indexados más relevantes para la pregunta del usuario. Este paso asegura que las respuestas generadas estén informadas por información curada.
 - **Aumento**: La información recuperada se revisa semánticamente comparada con la pregunta del usuario para seleccionar solo los fragmentos más relevantes. Este aumento ayuda a producir respuestas contextualmente precisas e informativas.
-- **Generación de Respuestas**: Finalmente, el modelo de IA generativa, en este caso el modelo GPT de Azure Open AI, genera respuestas o contenido basado en el contexto proporcionado por los fragmentos más relevantes.
+- **Generación de Respuestas**: Finalmente, el modelo de IA generativa, en este caso el modelo GPT de Azure Open AI, genera respuestas o contenido basado en el contexto proporcionado por los fragmentos más relevantes. Se incluyen dos opciones: sin y con el histórico de conversación en la generación de respuestas.
 - **Evaluación**: analizar las respuestas y el contexto para evaluar la similitud con una verdad de referencia (con respuestas esperadas a preguntas específicas) y si la respuesta estaba fundamentada en el contexto o no.
 - **Aplicación de demo**: se proporciona una aplicación web sencilla de demo (rag_chat.py) para realizar consultas sobre los contenidos indexados.
    + Para arrancar la aplicación ejecuta el siguiente comando: `streamlit run rag_chat.py`
@@ -93,6 +94,15 @@ SEARCH_SERVICE_QUERY_KEY="tu_key_de_ai_search"
 ```
 DOC_INTEL_ENDPOINT=<tu_endpoint_de_document_intelligence>
 DOC_INTEL_KEY=<tu_key_de_document_intelligence>
+```
+
+**PostgreSQL Database Connection**
+```
+PG_HOST=<your-pg-host>
+PG_PORT=<your-pg-port>
+PG_USER=<your-pg-user>
+PG_PASSWORD=<your-pg-password>
+PG_DATABASE=<your-pg-database>
 ```
 
 **Endpoint de base de datos SQLite**
