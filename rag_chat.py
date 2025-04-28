@@ -4,6 +4,8 @@ import sys
 from dotenv import load_dotenv, find_dotenv
 from openai import AzureOpenAI
 import streamlit as st
+import logging
+from logging.handlers import RotatingFileHandler
 
 sys.path.append('..')
 from common_utils import *
@@ -14,6 +16,7 @@ BOT_ICON = 'https://th.bing.com/th/id/R.b978cf9a22395802eb1a6b17f3493584?rik=bfp
 BOT_ICON = 'https://media.tenor.com/arlZrN0YovkAAAAC/robot-smile.gif'
 MSFT_LOGO='microsoft.png'
 APP_TITLE="RAG Chat Demo"
+MAX_QUESTION_ANSWER_HISTORY = 3
 
 # Función para mostrar mensajes en forma de bocadillo
 def get_message_markdown(message, message_role="user"):
@@ -48,6 +51,23 @@ if "messages" not in st.session_state:
     openai_config, ai_search_config = load_config()
     st.session_state.openai_config = openai_config
     st.session_state.ai_search_config = ai_search_config
+    st.session_state.history = []
+
+    # Basic logging configuration
+    log_file = "rag_chat.log"
+    log_handler = RotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=2)  # 5 MB per file, 2 backups
+    log_handler.setLevel(logging.INFO)
+    log_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    log_handler.setFormatter(log_formatter)
+    st.session_state.logger = logging.getLogger()
+    st.session_state.logger.setLevel(logging.INFO)
+    st.session_state.logger.addHandler(log_handler)
+    st.session_state.logger.info("RAG Chat application started.")
+    st.session_state.logger.info(f"OpenAI config: {openai_config}")
+    # Handler for printing to the console
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(log_formatter)
+    st.session_state.logger.addHandler(console_handler)
 
 # Prepare the web app
 st.set_page_config(
@@ -62,12 +82,15 @@ if user_input:
     store_message(user_input)
 
     with st.spinner("Generando respuesta..."):
-        #query = generate_query(st.session_state.openai_config["openai_client"],
-        #                       st.session_state.openai_config["aoai_deployment_name"],
-        #                       user_input)
-        #print(f'Query REWRITTEN: {query}')
-        
-        query = user_input
+        question = user_input
+        print(f"User question: {question}")
+        st.session_state.logger.info(f"User question: {question}")
+        query = generate_search_query(st.session_state.openai_config["openai_client"],
+                               st.session_state.openai_config["aoai_deployment_name"],
+                               question,
+                               st.session_state.history)
+        print(f'Rewritten Question: {query}')
+        st.session_state.logger.info(f'Rewritten Question: {query}')
 
         # Hybrid search
         results, num_results = semantic_hybrid_search(st.session_state.ai_search_config["ai_search_client_docs"],
@@ -75,18 +98,34 @@ if user_input:
                                                       st.session_state.openai_config["aoai_embedding_model"],
                                                       query, 10)
         print(f"query: {query}, num results: {num_results}")
+        st.session_state.logger.info(f"query: {query}, num results: {num_results}")
         #show_results(results, query)
 
         # Valid chunks for the user question
         valid_chunks, num_chunks = get_filtered_chunks(st.session_state.openai_config["openai_client"],
                                                        st.session_state.openai_config["aoai_rerank_model"],
-                                                       results, user_input)
+                                                       results, question)
 
         # Generate answer:
-        answer = generate_answer(st.session_state.openai_config["openai_client"],
-                                 st.session_state.openai_config["aoai_deployment_name"],
-                                 valid_chunks, query)
+        #answer = generate_answer(st.session_state.openai_config["openai_client"],
+        #                         st.session_state.openai_config["aoai_deployment_name"],
+        #                         valid_chunks,
+        #                         question)
+        answer = generate_answer_with_history(st.session_state.openai_config["openai_client"],
+                                              st.session_state.openai_config["aoai_deployment_name"],
+                                              valid_chunks,
+                                              question,
+                                              st.session_state.history)
+        st.session_state.logger.info(f"Answer: {answer}")
         store_message(answer, is_user=False)
+
+        # check if the number of question and answer pair has reached the limit of N and remove the oldest one
+        if len(st.session_state.history) >= MAX_QUESTION_ANSWER_HISTORY:
+            st.session_state.history.pop(0)
+        st.session_state.history.append({"question": question, "answer": answer})
+        print(f"\nhistory: {json.dumps(st.session_state.history, indent=2)}\n")
+        st.session_state.logger.info(f"\nhistory: {json.dumps(st.session_state.history, indent=2)}\n")
+        print("--------------------------------------------------")
 
         # Mostrar todos los mensajes almacenados en la sesión
         for message in st.session_state.messages:
