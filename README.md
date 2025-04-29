@@ -17,6 +17,9 @@ The examples of data sources connections can be customized to your own sources:
 - Database connection thru a API REST endpoint: in the repo is included a sample SQLite database and a small endpoint configuration with flask.
 - Sample PDF files in the 'docs' folder.
 
+**Presentation with RAG explaination and Workshop details**
+[RAG_workshop.pdf](RAG_workshop.pdf)
+
 ## Key components:
 - **Indexing**: create AI Search indexes, process documents chunking and indexing them. In this repo there are three examples of data sources to index:
    + a PostgreSQL database accessed thru its host, user and password.

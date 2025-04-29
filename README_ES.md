@@ -17,6 +17,9 @@ Los ejemplos de conexiones de fuentes de datos se pueden personalizar a tus prop
 - Conexión a base de datos a través de un endpoint API REST: en el repositorio se incluye una base de datos SQLite de muestra y una pequeña configuración de endpoint con flask.
 - Archivos PDF de muestra en la carpeta 'docs'.
 
+**Presentación con explicación de RAG y detalles del Workshop**
+[RAG_workshop.pdf](RAG_workshop.pdf)
+
 ## Componentes clave:
 - Indexación: crear índices de búsqueda de IA, procesar documentos fragmentándolos e indexándolos. En este repositorio hay dos tipos de fuentes de datos para indexar:
    + una base de datos PostgreSQL accesible a través de su host, usuario y password.
