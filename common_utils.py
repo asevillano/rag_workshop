@@ -87,38 +87,6 @@ def load_files(input_dir, ext):
                 files_content.append(row)
     return files_content
 
-# Generate the query for AI Search from the user question
-def generate_query_OLD(openai_client, aoai_deployment_name, query1, answer=None, query2=None):
-    if answer == None: # There is not previous question and answer
-        messages = [{"role": "system", "content": SYSTEM_PROMPT_TO_GENERATE_QUERY},
-                    {"role": "user", "content": "How did crypto do last year?"},
-                    {"role": "assistant", "content": "Summarize Cryptocurrency Market Dynamics from last year"},
-                    {"role": "user", "content": "What are my health plans?"},
-                    {"role": "assistant", "content": "Show available health plans"},
-                    {"role": "user", "content": f"Generate search query for: {query1}"}]
-    else:
-        messages = [{"role": "system", "content": SYSTEM_PROMPT_TO_GENERATE_QUERY},
-                    {"role": "user", "content": "How did crypto do last year?"},
-                    {"role": "assistant", "content": "Summarize Cryptocurrency Market Dynamics from last year"},
-                    {"role": "user", "content": "What are my health plans?"},
-                    {"role": "assistant", "content": "Show available health plans"},
-                    {"role": "user","content": query1},
-                    {"role": "assistant", "content": answer},
-                    {"role": "user", "content": f"Generate search query for: {query2}"}]
-    try:
-        response = openai_client.chat.completions.create(
-            model=aoai_deployment_name,
-            messages=messages,
-            temperature=0.0,
-            max_tokens=1200
-        )
-        json_response = json.loads(response.model_dump_json())
-        response = json_response['choices'][0]['message']['content']
-    except Exception as ex:
-        print(f'ERROR call_aoai: {ex}')
-        response = None
-    return response
-
 # Semantic Hybrid Search in AI Search
 def semantic_hybrid_search(ai_search_client, openai_client, aoai_embedding_model, query, max_docs):
     EMBEDDING_FIELDS = "embeddingTitle, embeddingContent"
@@ -268,6 +236,29 @@ def generate_answer(aoai_client, aoai_deployment_name, valid_chunks, question):
     #print(f'\tRESPONSE: [{answer}]')
     if answer == None: answer = 'ERROR'
     return answer
+
+
+def generate_answer_with_history(aoai_client, aoai_deployment_name, valid_chunks, question, history):
+    messages = [{'role': 'system', 'content': SYSTEM_PROMPT_GENERATE_ANSWER}]
+    for q_a in history:
+        messages.append({"role": "user", "content": q_a["question"]})
+        messages.append({"role": "assistant", "content": q_a["answer"]})
+    messages.append({"role": "user", "content": f"**Knowledge base:**\nSections: {valid_chunks}\n**Question:** {question}\nFinal Response:"})
+
+    print(f"\nmessages: {json.dumps(messages, indent=2)}\n")
+    try:
+        response = aoai_client.chat.completions.create(
+            model=aoai_deployment_name,
+            messages=messages,
+            temperature=0.0,
+            max_tokens=1200
+        )
+        json_response = json.loads(response.model_dump_json())
+        response = json_response['choices'][0]['message']['content']
+    except Exception as ex:
+        print(f'ERROR generate_query: {ex}')
+        response = None
+    return response
 
 # Cut a text to a maximum number of tokens
 def cut_max_tokens(text):
