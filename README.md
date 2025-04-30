@@ -116,3 +116,5 @@ SQLITE_USER=<your_user>
 SQLITE_PASSWORD=<your_password>
 ```
 The needed libraries are specified in [requirements.txt](requirements.txt).
+
+[**Aquí está este fichero README en castellano**](README_ES.md)

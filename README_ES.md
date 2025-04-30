@@ -116,3 +116,5 @@ SQLITE_PASSWORD=<tu_password>
 ```
 
 Las bibliotecas necesarias están especificadas en [requirements.txt](requirements.txt).
+
+[**Here it is this README file in English**](README.md)
