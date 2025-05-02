@@ -26,7 +26,7 @@ MAX_GENERATE = 10
 MAX_TOKENS = 512
 TOKENS_OVERLAP = 128 # 25% of 512 tokens is 128 tokens
 
-def load_config():
+def load_config(verbose=True):
     # Load configuration variables from .env file
     load_dotenv(find_dotenv(), override=True)
     # Azure OpenAI configuration
@@ -45,10 +45,12 @@ def load_config():
                                      api_key=aoai_key,
                                      api_version=api_version),
     }
-    print(f'aoai_endpoint: {openai_config["aoai_endpoint"]}')
-    print(f'aoai_deployment_name: {openai_config["aoai_deployment_name"]}')
-    print(f'oai_embedding_model: {openai_config["aoai_embedding_model"]}')
-    print(f'aoai_rerank_model: {openai_config["aoai_rerank_model"]}')
+
+    if verbose:
+        print(f'aoai_endpoint: {openai_config["aoai_endpoint"]}')
+        print(f'aoai_deployment_name: {openai_config["aoai_deployment_name"]}')
+        print(f'oai_embedding_model: {openai_config["aoai_embedding_model"]}')
+        print(f'aoai_rerank_model: {openai_config["aoai_rerank_model"]}')
 
     # Azure AI Search configuration
     ai_search_endpoint = os.environ["SEARCH_SERVICE_ENDPOINT"]
@@ -70,8 +72,9 @@ def load_config():
                                               index_name=ai_search_index_name_docs,
                                               credential=ai_search_credential),
     }
-    print(f'ai_search_index_name_regs: {ai_search_config["ai_search_index_name_regs"]}')
-    print(f'ai_search_index_name_docs: {ai_search_config["ai_search_index_name_docs"]}')
+    if verbose:
+        print(f'ai_search_index_name_regs: {ai_search_config["ai_search_index_name_regs"]}')
+        print(f'ai_search_index_name_docs: {ai_search_config["ai_search_index_name_docs"]}')
 
     return openai_config, ai_search_config
 
@@ -229,7 +232,7 @@ def create_embedding(openai_client, aoai_embedding_model, text):
 
 # GENERATE THE ANSWER
 def generate_answer(aoai_client, aoai_deployment_name, valid_chunks, question):
-    print(f'\nCalling Azure OpenAI model {aoai_deployment_name}...')
+    #print(f'\nCalling Azure OpenAI model {aoai_deployment_name}...')
     user_prompt = f"**Knowledge base:**\nSections: {valid_chunks}\n**Question:** {question}\nFinal Response:"
 
     answer = call_aoai(aoai_client, aoai_deployment_name, SYSTEM_PROMPT_GENERATE_ANSWER, user_prompt, 0.0, 1200)
