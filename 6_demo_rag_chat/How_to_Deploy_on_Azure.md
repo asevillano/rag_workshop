@@ -1,6 +1,8 @@
 ## INSTRUCTIONS FOR DEPLOYING ON AZURE
 
-### 0. Install and open Docker Desktop
+### 0. Install and open [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/), and install [Azure CLI](https://learn.microsoft.com/es-es/cli/azure/install-azure-cli-windows?pivots=msi)
+
+Set the connection variables in .env file, using the template.
 
 ### 1. Build the Docker image:
 `docker build -t rag_chat:v1 .`
@@ -12,7 +14,9 @@
 - Go to the Azure portal and create a new Container Registry (ACR) resource.
 - The ACR name is `<your-registry-name>`
 
-Command:
+Commands:
+`az login`
+
 `az acr create --resource-group <your-resource-group> --name <your-registry-name> --sku Basic`
 
 ### 4. Enable admin user in ACR:
@@ -35,8 +39,11 @@ Command:
    + Port: remove 80 and enter 8501 / TCP, which is the port where Streamlit runs the application.
 
 Command:
-- User=your-registry-name. Get ACR password
-`az container create --resource-group <tu_grupo_de_recursos> --name <your-registry-name> --image <your-registry-name>.azurecr.io/rag_chat:v1 --cpu 1 --memory 1.5 --registry-login-server <your-registry-name>.azurecr.io --registry-username <your-registry-name> --registry-password <acr-password> --ports 8501 --dns-name-label <your-registry-name> --query instanceView.state`
+
+- ACR user = `<your-registry-name>`.
+- ACR password: get ACR password with `az acr credential show --name <your-registry-name>`
+
+`az container create --resource-group <your-resource-group> --name <your-registry-name> --image <your-registry-name>.azurecr.io/rag_chat:v1 --cpu 1 --memory 1.5 --registry-login-server <your-registry-name>.azurecr.io --registry-username <your-registry-name> --registry-password <acr-password> --ports 8501 --dns-name-label <your-registry-name> --query instanceView.state --os-type Linux`
 
 ### 9. Configure environment variables (if necessary):
 - In the Azure portal, go to the container settings and add the necessary environment variables.
@@ -52,7 +59,9 @@ Command:
 
 ## INSTRUCCIONES PARA DESPLEGAR EN AZURE
 
-### 0. Instalar y abrir docker desktop
+### 0. Instalar y abrir docker desktop [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/), e instalar [Azure CLI](https://learn.microsoft.com/es-es/cli/azure/install-azure-cli-windows?pivots=msi)
+
+Establece las variables de conexión en el fichero .env usando la plantilla.
 
 ### 1. Construir la imagen Docker:
 `docker build -t rag_chat .`
@@ -65,6 +74,8 @@ Command:
 - El nombre de ACR es `<nombre-de-tu-registro>`
 
 Comando:
+`az login`
+
 `az acr create --resource-group <your-resource-group> --name <your-registry-name> --sku Basic`
 
 ### 4. Habilitad usuario admin en el ACR
@@ -88,7 +99,10 @@ Comando:
 
 Command:
 - Usuario=your-registry-name. Obtén la password de ACR.
-`az container create --resource-group <tu_grupo_de_recursos> --name <nombre-de-tu-registro> --image <nombre-de-tu-registro>.azurecr.io/rag_chat:v1 --cpu 1 --memory 1.5 --registry-login-server <nombre-de-tu-registro>.azurecr.io --registry-username <nombre-de-tu-registro> --registry-password <acr-password> --ports 8501 --dns-name-label <nombre-de-tu-registro> --query instanceView.state`
+- Usuario ACR = `<nombre-de-tu-registro>`.
+- Password ACR: obtener la password de ACR con `az acr credential show --name <your-registry-name>`
+
+`az container create --resource-group <tu_grupo_de_recursos> --name <nombre-de-tu-registro> --image <nombre-de-tu-registro>.azurecr.io/rag_chat:v1 --cpu 1 --memory 1.5 --registry-login-server <nombre-de-tu-registro>.azurecr.io --registry-username <nombre-de-tu-registro> --registry-password <acr-password> --ports 8501 --dns-name-label <nombre-de-tu-registro> --query instanceView.state --os-type Linux`
 
 ### 9. Configurar las variables de entorno (si es necesario):
 - En el portal de Azure, ve a la configuración del contenedor y añade las variables de entorno necesarias.
