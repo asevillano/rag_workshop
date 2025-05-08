@@ -26,7 +26,7 @@ MAX_GENERATE = 10
 MAX_TOKENS = 512
 TOKENS_OVERLAP = 128 # 25% of 512 tokens is 128 tokens
 
-def load_config(verbose=True):
+def load_config():
     # Load configuration variables from .env file
     load_dotenv(find_dotenv(), override=True)
     # Azure OpenAI configuration
@@ -46,11 +46,10 @@ def load_config(verbose=True):
                                      api_version=api_version),
     }
 
-    if verbose:
-        print(f'aoai_endpoint: {openai_config["aoai_endpoint"]}')
-        print(f'aoai_deployment_name: {openai_config["aoai_deployment_name"]}')
-        print(f'oai_embedding_model: {openai_config["aoai_embedding_model"]}')
-        print(f'aoai_rerank_model: {openai_config["aoai_rerank_model"]}')
+    print(f'aoai_endpoint: {openai_config["aoai_endpoint"]}')
+    print(f'aoai_deployment_name: {openai_config["aoai_deployment_name"]}')
+    print(f'oai_embedding_model: {openai_config["aoai_embedding_model"]}')
+    print(f'aoai_rerank_model: {openai_config["aoai_rerank_model"]}')
 
     # Azure AI Search configuration
     ai_search_endpoint = os.environ["SEARCH_SERVICE_ENDPOINT"]
@@ -66,15 +65,15 @@ def load_config(verbose=True):
         "ai_search_credential": ai_search_credential,
         # Initialize AI Search clients
         "ai_search_client_regs": SearchClient(endpoint=ai_search_endpoint,
-                                                index_name=ai_search_index_name_regs,
-                                                credential=ai_search_credential),
+                                              index_name=ai_search_index_name_regs,
+                                              credential=ai_search_credential),
         "ai_search_client_docs": SearchClient(endpoint=ai_search_endpoint,
                                               index_name=ai_search_index_name_docs,
                                               credential=ai_search_credential),
     }
-    if verbose:
-        print(f'ai_search_index_name_regs: {ai_search_config["ai_search_index_name_regs"]}')
-        print(f'ai_search_index_name_docs: {ai_search_config["ai_search_index_name_docs"]}')
+
+    print(f'ai_search_index_name_regs: {ai_search_config["ai_search_index_name_regs"]}')
+    print(f'ai_search_index_name_docs: {ai_search_config["ai_search_index_name_docs"]}')
 
     return openai_config, ai_search_config
 
