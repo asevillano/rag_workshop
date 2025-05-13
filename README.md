@@ -4,7 +4,7 @@ RAG (Retrieval Augmented Generation), is an advanced AI architecture that combin
 
 The purpose of this repository is to reflect the RAG process in a hands-on workshop, following the best practices, along with tools and techniques for testing and evaluation.
 
-This document is divided in sections that follow the standard order of implementation for an end-to-end implementation of a RAG solution for learning purposes.
+This repository is divided in sections that follow the standard order of implementation for an end-to-end implementation of a RAG solution for learning purposes.
 
 ## How to use this repository
 
@@ -13,21 +13,21 @@ This repository is designed as a comprehensive learning resource for building a 
 Alternatively, if you're aiming for a holistic understanding of RAG implementations, you can follow the repository in a sequential manner. By proceeding through the sections in order, you'll gain a step-by-step overview of the entire process, from foundational concepts to advanced techniques. This pathway is ideal for those who want a complete end-to-end review, ensuring a thorough grasp of how to build and optimize RAG systems. Whichever approach you choose, this repository serves as a valuable educational tool to enhance your knowledge and skills in this cutting-edge area.
 
 The examples of data sources connections can be customized to your own sources:
-- Connection to PostgreSQL database: you can configure the connection parámeters to your dabase in the .env file
-- Database connection thru a API REST endpoint: in the repo is included a sample SQLite database and a small endpoint configuration with flask.
+- Connection to PostgreSQL database: you can configure the connection parameters to your database in the .env file
+- Database connection through a API REST endpoint: in the repo is included a sample SQLite database and a small endpoint configuration with flask.
 - Sample PDF files in the 'docs' folder.
 
-**Presentation with RAG explaination and Workshop details**
+**Presentation with RAG explanation and Workshop details**
 [RAG_workshop.pdf](RAG_workshop.pdf)
 
 ## Key components:
 - **Indexing**: create AI Search indexes, process documents chunking and indexing them. In this repo there are three examples of data sources to index:
-   + a PostgreSQL database accessed thru its host, user and password.
-   + a SQLite database accessed thru an endpoint configured with flask.
+   + a PostgreSQL database accessed through its host, user and password.
+   + a SQLite database accessed through an endpoint configured with Flask.
    + PDF files in the 'docs' folder.
 - **Search and Retrieval**: The solution retrieves with hybrid search with Semantic ranker of Azure AI Search the most relevant indexed documents or chunks to the user's question. This step ensures that the generated responses are informed by curated information.
 - **Augmentation**: The retrieved information is then reviewed semantically compared with the user's question to select only the most relevant chunks. This augmentation helps in producing contextually accurate and informative responses.
-- **Answer Generation**: Finally, the generative AI model, in this case Azure Open AI GPT model, generate responses or content based on the context provided by the most relevant chunks. Two options are included: with and without conversation history in the response generation.
+- **Answer Generation**: Finally, the generative AI model, in this case, an Azure OpenAI GPT model, generates responses or content based on the context provided by the most relevant chunks. Two options are included: with and without conversation history in the response generation.
 - **Evaluation**: analyze the answers and the context to evaluate the similarity with a ground truth (with expected answers to specific questions) and if the answer was grounded on the context or not.
 - **Demo Application**: A simple web demo application (rag_chat.py) is provided to query the indexed contents.
    + To start the application, run the following command: streamlit run rag_chat.py
@@ -47,7 +47,7 @@ The following diagram represents the reference standard process that encompasses
 
 ## Table of contents
 <!--ts-->
-   * [1. Indexing](./1-indexing/indexing.ipynb)
+   * [1. Indexing](./1_indexing/indexing.ipynb)
 
    * [2. 3. 4. Search, Augmentation and Answer generation](./2_3_4_search_augment_generate/search_augment_generate.ipynb)
 
