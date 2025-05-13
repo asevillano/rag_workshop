@@ -47,7 +47,7 @@ The following diagram represents the reference standard process that encompasses
 
 ## Table of contents
 <!--ts-->
-   * [1. Indexing](./1-indexing/indexing.ipynb)
+   * [1. Indexing](./1_indexing/indexing.ipynb)
 
    * [2. 3. 4. Search, Augmentation and Answer generation](./2_3_4_search_augment_generate/search_augment_generate.ipynb)
 
