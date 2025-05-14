@@ -46,7 +46,7 @@ El siguiente diagrama representa el proceso estándar de referencia que abarca m
 
 ## Tabla de contenidos
 <!--ts-->
-   * [1. Indexación](./1-indexing/indexing.ipynb)
+   * [1. Indexación](./1_indexing/indexing.ipynb)
 
    * [2. 3. 4. Búsqueda, Aumento and Generación de respuesta](./2_3_4_search_augment_generate/search_augment_generate.ipynb)
 
