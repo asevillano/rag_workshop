@@ -1,4 +1,6 @@
-# RAG Workshop
+# RAG Workshop 
+
+[**Aquí está este fichero README en castellano**](README_ES.md)
 
 RAG (Retrieval Augmented Generation), is an advanced AI architecture that combines the power of information retrieval with generative AI models. The key idea is to enhance the generative AI model's output by retrieving relevant information from a collection of documents or data sources. This approach improves the accuracy and relevance of the generated content by grounding it in real-world data.
 
@@ -117,4 +119,3 @@ SQLITE_PASSWORD=<your_password>
 ```
 The needed libraries are specified in [requirements.txt](requirements.txt).
 
-[**Aquí está este fichero README en castellano**](README_ES.md)
