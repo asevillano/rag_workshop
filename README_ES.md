@@ -1,5 +1,7 @@
 # RAG Workshop
 
+[**Here it is the README file in English**](README.md)
+
 RAG (Generación Aumentada por Recuperación) es una arquitectura avanzada de IA que combina el poder de la recuperación de información con modelos de IA generativa. La idea clave es mejorar la salida del modelo de IA generativa recuperando información relevante de una colección de documentos o fuentes de datos. Este enfoque mejora la precisión y relevancia del contenido generado al fundamentarlo en datos del mundo real.
 
 El propósito de este repositorio es reflejar el proceso de RAG en un taller práctico, siguiendo las mejores prácticas, junto con herramientas y técnicas para pruebas y evaluación.
